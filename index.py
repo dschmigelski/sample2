@@ -4,8 +4,8 @@ import datetime
 
 def handler(event, context):
     data = {
-        'output': 'Hello World',
-        'timestamp': datetime.datetime.utcnow().isoformat()
+        'output': 'Hello Fam'
+       
     }
     return {'statusCode': 200,
             'body': json.dumps(data),
