@@ -39,15 +39,6 @@ Resources:
           Properties:
             Path: /
             Method: post
-  # Function that we are using to populate database
-  InitFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: populateDB.handler
-      Runtime: python3.6
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
   # Table to look for names
   HelloWorldTable:
     Type: AWS::DynamoDB::Table
@@ -61,14 +52,7 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-  InitializeDynamoDB:
-    Type: Custom::InitFunction
-    DependsOn: HelloWorldTable
-    Properties:
-      ServiceToken:
-         Fn::GetAtt: [ InitFunction , "Arn" ]
-      DynamoTableName:
-        Ref: HelloWorldTable
+ 
         
 
 
