@@ -43,9 +43,7 @@ Resources:
     Properties:
       Handler: populateDB.handler
       Runtime: python3.6
-      Role:
-        Fn::ImportValue:
-          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Role: !GetAtt LambdaExecutionRole.Arn
       Timeout: 60
   HelloWorldTable:
     Type: AWS::DynamoDB::Table
