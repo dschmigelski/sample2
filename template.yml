@@ -38,6 +38,15 @@ Resources:
           Properties:
             Path: /
             Method: post
+  InitFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: populateDB.handler
+      Runtime: python3.6
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Timeout: 60
   HelloWorldTable:
     Type: AWS::DynamoDB::Table
     Properties: 
@@ -50,3 +59,14 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
+  InitializeDynamoDB:
+    Type: Custom::InitFunction
+    DependsOn: HelloWorldTable
+    Properties:
+      ServiceToken:
+         Fn::GetAtt: [ InitFunction , "Arn" ]
+      DynamoTableName:
+        Ref: HelloWorldTable
+        
+
+
