@@ -19,6 +19,16 @@ Parameters:
 #       Type: Canary10Percent5Minutes
 
 Resources:
+  LambdaExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: "sts:AssumeRole"
   HelloWorld:
     Type: AWS::Serverless::Function
     Properties:
@@ -38,13 +48,15 @@ Resources:
           Properties:
             Path: /
             Method: post
+  # Function that we are using to populate database
   InitFunction:
     Type: AWS::Lambda::Function
     Properties:
       Handler: populateDB.handler
       Runtime: python3.6
-      Role: !GetAtt LambdaExecutionRole.Arn
+      Role: !GetAtt [ LambdaExecutionRole, Arn ]
       Timeout: 60
+  # Table to look for names
   HelloWorldTable:
     Type: AWS::DynamoDB::Table
     Properties: 
