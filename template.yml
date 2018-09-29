@@ -38,3 +38,15 @@ Resources:
           Properties:
             Path: /
             Method: post
+  HelloWorldTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - AttributeName: sample
+          AttributeType: S
+      KeySchema: 
+        - AttributeName: sample
+          KeyType: HASH
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
